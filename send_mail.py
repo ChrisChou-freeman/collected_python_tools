@@ -35,3 +35,6 @@ def main():
         s.send()
     except KeyboardInterrupt:
         exit()
+
+if __name__ == "__main__":
+    main()
