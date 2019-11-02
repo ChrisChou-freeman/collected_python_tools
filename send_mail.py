@@ -14,7 +14,7 @@ class SendMail(object):
 
     def send(self):
         self.pwd = getpass.getpass("input your password>>")
-        raw_input("press anykey continue..")
+        input("press anykey continue..")
         smtp = SMTP_SSL(self.host_server)
         smtp.set_debuglevel(1)
         smtp.ehlo(self.host_server)
@@ -29,8 +29,8 @@ class SendMail(object):
 
 def main():
     try:
-        title = raw_input("email title>>")
-        content = raw_input("email content>>")
+        title = input("email title>>")
+        content = input("email content>>")
         s = SendMail('1050434689@qq.com', mail_title=title, mail_content=content)
         s.send()
     except KeyboardInterrupt:
