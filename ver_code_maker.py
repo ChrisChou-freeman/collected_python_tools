@@ -24,10 +24,9 @@ line_number = (1,5)
 
 #用来随机生成一个字符串
 def gene_text():
-    source = list(string.ascii_letters)
-    for index in range(0,10):
-        source.append(str(index))
-    return ''.join(random.sample(source,number))#number是生成验证码的位数
+    source = string.ascii_letters + string.digits
+    return ''.join(random.choices(source, k=number))#number是生成验证码的位数
+
 #用来绘制干扰线
 def gene_line(draw,width,height):
     begin = (random.randint(0, width), random.randint(0, height))
