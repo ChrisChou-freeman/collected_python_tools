@@ -25,7 +25,7 @@ def get_video_links(the_url):
 
     # filter the link sending with .mp4
     video_links = [the_url + link['src'] for link in links if link['src'].split('?')[0].endswith('mp4')]
-    print video_links
+    print(video_links)
     return video_links
 
 
@@ -61,7 +61,7 @@ def download_video_series(video_links):
 def main():
     the_url = ""
     while True:
-        the_url = raw_input("input include videos url in here:")
+        the_url = input("input include videos url in here:")
         if the_url.startswith("http"):
             break
         else:
@@ -78,4 +78,4 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print("\nbye~")
-        raw_input()
+        input()
