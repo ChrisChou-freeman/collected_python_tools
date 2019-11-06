@@ -3,10 +3,16 @@ import random
 import string
 import sys
 import math
+import os
+
 from PIL import Image,ImageDraw,ImageFont,ImageFilter
 
 #字体的位置，不同版本的系统会有不同
-font_path = '/Library/Fonts/Arial.ttf'
+font_path = ""
+if os.name == "nt":
+    font_path = 'C:/Windows/Fonts/Arial.ttf'
+else:
+    font_path = '/Library/Fonts/Arial.ttf'
 #生成几位数的验证码
 number = 4
 #生成验证码图片的高度和宽度
@@ -25,7 +31,7 @@ line_number = (1,5)
 #用来随机生成一个字符串
 def gene_text():
     source = string.ascii_letters + string.digits
-    return ''.join(random.choices(source, k=number))#number是生成验证码的位数
+    return ''.join([ random.choice(source) for _ in range(number) ])#number是生成验证码的位数
 
 #用来绘制干扰线
 def gene_line(draw,width,height):
