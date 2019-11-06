@@ -5,7 +5,7 @@ import getpass
 
 class SendMail(object):
     def __init__(self, user_eamil, mail_title="test email", mail_content="test email"):
-        self.host_server = 'smtp.qq.com' 
+        self.host_server = 'smtp.qq.com' # your smtp email server, just google
         self.pwd = ""
         self.sender_email = '1050434689@qq.com'
         self.receiver = user_eamil if user_eamil else self.sender_email

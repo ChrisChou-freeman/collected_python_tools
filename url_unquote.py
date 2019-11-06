@@ -1,8 +1,10 @@
 import sys
+import importlib
+
 if sys.version_info[0]==2:
-    import urllib
+    urllib = importlib.import_module("urllib")
 else:
-    import urllib.parse as urllib
+    urllib = importlib.import_module("urllib.parse")
 
 
 def my_url_unquote(url):
