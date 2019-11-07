@@ -7,53 +7,82 @@ import os
 
 from PIL import Image,ImageDraw,ImageFont,ImageFilter
 
-#字体的位置，不同版本的系统会有不同
-font_path = ""
-if os.name == "nt":
-    font_path = 'C:/Windows/Fonts/Arial.ttf'
-else:
-    font_path = '/Library/Fonts/Arial.ttf'
-#生成几位数的验证码
-number = 4
-#生成验证码图片的高度和宽度
-size = (100,30)
-#背景颜色，默认为白色
-bgcolor = (255,255,255)
-#字体颜色，默认为蓝色
-fontcolor = (0,0,255)
-#干扰线颜色。默认为红色
-linecolor = (255,0,0)
-#是否要加入干扰线
-draw_line = True
-#加入干扰线条数的上下限
-line_number = (1,5)
+class MakeVerCOde(object):
+    def __init__(
+        self,
+        code_number,
+        image_size,
+        bg_color,
+        font_color,
+        line_color,
+        font_path,
+        line_number,
+        draw_line=True,
+        font_size=25,
+        output_file_name="test.png"
+    ):
+        self.code_number = code_number
+        self.image_size = image_size
+        self.bg_color = bg_color
+        self.font_color = font_color
+        self.line_color = line_color
+        self.font_path = font_path
+        self.line_number = line_number
+        self.draw_line = draw_line
+        self.font_size = font_size
+        self.output_file_name = output_file_name
 
-#用来随机生成一个字符串
-def gene_text():
-    source = string.ascii_letters + string.digits
-    return ''.join([ random.choice(source) for _ in range(number) ])#number是生成验证码的位数
+    def gene_text(self):
+        source = string.ascii_letters + string.digits
+        return ''.join([ random.choice(source) for _ in range(self.code_number) ])
 
-#用来绘制干扰线
-def gene_line(draw,width,height):
-    begin = (random.randint(0, width), random.randint(0, height))
-    end = (random.randint(0, width), random.randint(0, height))
-    draw.line([begin, end], fill = linecolor)
 
-#生成验证码
-def gene_code():
-    width,height = size #宽和高
-    image = Image.new('RGBA',(width,height),bgcolor) #创建图片
-    font = ImageFont.truetype(font_path,25) #验证码的字体
-    draw = ImageDraw.Draw(image)  #创建画笔
-    text = gene_text() #生成字符串
-    font_width, font_height = font.getsize(text)
-    draw.text(((width - font_width) / number, (height - font_height) / number),text,\
-            font= font,fill=fontcolor) #填充字符串
-    if draw_line:
-        gene_line(draw,width,height)
-    # image = image.transform((width+30,height+10), Image.AFFINE, (1,-0.3,0,-0.1,1,0),Image.BILINEAR)  #创建扭曲
-    image = image.transform((width+20,height+10), Image.AFFINE, (1,-0.3,0,-0.1,1,0),Image.BILINEAR)  #创建扭曲
-    image = image.filter(ImageFilter.EDGE_ENHANCE_MORE) #滤镜，边界加强
-    image.save('test.png') #保存验证码图片
+    def gene_line(self, draw, width, height):
+        begin = (random.randint(0, width), random.randint(0, height))
+        end = (random.randint(0, width), random.randint(0, height))
+        draw.line([begin, end], fill = self.line_color)
+
+
+    def gene_code(self):
+        width, height = self.image_size
+        image = Image.new('RGBA', (width, height), self.bg_color)
+        font = ImageFont.truetype(self.font_path, self.font_size) 
+        draw = ImageDraw.Draw(image)
+        text = self.gene_text() 
+        font_width, font_height = font.getsize(text)
+        draw.text(
+            ((width - font_width) / self.code_number, (height - font_height) / self.code_number),
+            text, font=font, fill=fontcolor
+        )
+        if self.draw_line:
+            self.gene_line(draw, width, height)
+        image = image.transform(
+            (width+20,height+10),
+            Image.AFFINE, (1,-0.3,0,-0.1,1,0),
+            Image.BILINEAR
+        )
+        image = image.filter(ImageFilter.EDGE_ENHANCE_MORE)
+        image.save(self.output_file_name)
 if __name__ == "__main__":
-    gene_code()
+    font_path = None
+    if os.name == "nt":
+        font_path = 'C:/Windows/Fonts/Arial.ttf'
+    else:
+        font_path = '/Library/Fonts/Arial.ttf'
+    number = 4
+    image_size = (100, 30)
+    bgcolor = (255, 255, 255)
+    fontcolor = (0, 0, 255)
+    linecolor = (255, 0, 0)
+    draw_line = True
+    line_number = (1, 5)
+    mc = MakeVerCOde(
+        number,
+        image_size,
+        bgcolor,
+        fontcolor,
+        linecolor,
+        font_path,
+        line_number
+    )
+    mc.gene_code()
