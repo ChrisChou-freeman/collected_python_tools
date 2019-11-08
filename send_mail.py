@@ -31,7 +31,7 @@ def main():
     try:
         title = input("email title>>")
         content = input("email content>>")
-        s = SendMail('1050434689@qq.com', mail_title=title, mail_content=content)
+        s = SendMail('810676784@qq.com', mail_title=title, mail_content=content)
         s.send()
     except KeyboardInterrupt:
         exit()
