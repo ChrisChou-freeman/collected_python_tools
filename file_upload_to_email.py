@@ -7,26 +7,34 @@ import getpass
 import sys
 
 
+
 if sys.version_info[0]==2:
     input = raw_input
 else:
     input = input
 
 class SendMail(object):
-    def __init__(self, user_eamil, mail_title="test email", mail_content="test email", file_path=""):
+    def __init__(
+        self,
+        sender_email,
+        password,
+        to_eamil,
+        mail_title="test email",
+        mail_content="test email",
+        file_path=""
+    ):
         self.host_server = 'smtp.qq.com' # your smtp email server
-        self.pwd = ""
-        self.sender_email = '1050434689@qq.com'
-        self.receiver = user_eamil if user_eamil else self.sender_email
+        self.pwd = password
+        self.sender_email = sender_email
+        self.receiver = to_eamil if to_eamil else self.sender_email
         self.mail_content = mail_content
         self.mail_title = mail_title
         self.file_path = file_path
 
     def send(self):
-        self.pwd = getpass.getpass("input your password>>")
         input("press anykey continue..")
-        smtp = SMTP_SSL(self.host_server)
-        smtp.set_debuglevel(1)
+        smtp = SMTP_SSL(self.host_server, port=465)
+        # smtp.set_debuglevel(1)
         smtp.ehlo(self.host_server)
         smtp.login(self.sender_email, self.pwd)
         
@@ -55,16 +63,23 @@ class SendMail(object):
 
 def main():
     try:
+        your_email = input("type you email>>")
+        pwd = getpass.getpass("input your password>>")
+        to_email = input("to email>>")
         title = input("email title>>")
         content = input("email content>>")
         file_path = input("input your file_path>>")
         s = SendMail(
-            '1050434689@qq.com',
+            your_email,
+            pwd,
+            to_email,
             mail_title=title,
             mail_content=content,
             file_path=file_path
         )
         s.send()
+        print("mail already send")
+        input("")
     except KeyboardInterrupt:
         exit()
 

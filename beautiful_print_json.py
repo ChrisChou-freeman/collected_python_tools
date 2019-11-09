@@ -8,5 +8,5 @@ def beautiful_print(json_data):
     pprint.PrettyPrinter().pprint(python_obj)
 
 if __name__ == "__main__":
-    json_data = raw_input("json data>>")
+    json_data = input("json data>>")
     beautiful_print(json_data)
