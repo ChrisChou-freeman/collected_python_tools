@@ -64,21 +64,6 @@ class SendMail(object):
         smtp.quit()
 
 def main():
-    # '''
-    # //sender_conf.json
-    # {
-    #     "your_email": "email",
-    #     "passward": "",
-    #     "send_to": "email",
-    #     "title": "test",
-    #     "content": "test",
-    #     "file_path": "./1.txt"
-    # }
-    # '''
-    # r = open("./sender_conf.json", "r")
-    # data = r.read()
-    # data = json.loads(data)
-    # r.close()
     try:
         your_email = input("type you email>>")
         passward = getpass.getpass("input your password>>")
