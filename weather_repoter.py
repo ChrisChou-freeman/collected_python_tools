@@ -1,23 +1,32 @@
 import json
 import sys
 import importlib
+
 if sys.version_info[0]==2:
     urllib = importlib.import_module("urllib")
+    input = raw_input
 else:
     urllib = importlib.import_module("urllib.request")
 
 
-city_code = {
+city_codes = {
     "beijing": 101010100,
     "shenzhen":101280601,
     "ganzhou": 101240701,
     "guangzhou": 101280101,
 }
 
+city_list = [
+    "beijing",
+    "shenzhen",
+    "ganzhou",
+    "guangzhou"
+]
+
 def request_weather(city_name):
-    if city_code.get(city_name.lower()):
+    if city_codes.get(city_name.lower()):
         the_china_weather_url = "http://www.weather.com.cn/data/cityinfo/{}.html"
-        code = city_code[city_name.lower()]
+        code = city_codes[city_name.lower()]
         url = the_china_weather_url.format(code)
         respond = urllib.urlopen(url)
         data = respond.read()
@@ -36,4 +45,22 @@ def request_weather(city_name):
     else:
         print("the city name, note find...")
 
-request_weather("shenzhen")
+def main():
+    while True:
+        print("choice your city")
+        print("--------------")
+        for index, item in enumerate(city_list):
+            print("{}--{}".format(index, item))
+        print("")
+        print("--------------")
+        number = input("input the city number>>")
+        if number:
+            city_name = city_list[int(number)]
+            request_weather(city_name)
+            input("press anykey continue...")
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit()

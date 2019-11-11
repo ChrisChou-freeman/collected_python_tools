@@ -5,7 +5,9 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header
 import sys
 import json
+import getpass
 import logging
+
 
 
 if sys.version_info[0]==2:
@@ -16,23 +18,24 @@ else:
 class SendMail(object):
     def __init__(
         self,
-        sender_mail,
+        sender_email,
+        password,
         to_eamil,
         mail_title="test email",
         mail_content="test email",
-        file_path="",
-        pass_word=""
+        file_path=""
     ):
         self.host_server = 'smtp.qq.com' # your smtp email server
-        self.pwd = pass_word
-        self.sender_email = sender_mail
+        self.pwd = password
+        self.sender_email = sender_email
         self.receiver = to_eamil if to_eamil else self.sender_email
         self.mail_content = mail_content
         self.mail_title = mail_title
         self.file_path = file_path
 
     def send(self):
-        smtp = SMTP_SSL(self.host_server)
+        input("press anykey continue..")
+        smtp = SMTP_SSL(self.host_server, port=465)
         # smtp.set_debuglevel(1)
         smtp.ehlo(self.host_server)
         smtp.login(self.sender_email, self.pwd)
@@ -61,38 +64,39 @@ class SendMail(object):
         smtp.quit()
 
 def main():
-    '''
-    //sender_conf.json
-    {
-        "your_email": "email",
-        "passward": "",
-        "send_to": "email",
-        "title": "test",
-        "content": "test",
-        "file_path": "./1.txt"
-    }
-    '''
-    r = open("./sender_conf.json", "r")
-    data = r.read()
-    data = json.loads(data)
-    r.close()
+    # '''
+    # //sender_conf.json
+    # {
+    #     "your_email": "email",
+    #     "passward": "",
+    #     "send_to": "email",
+    #     "title": "test",
+    #     "content": "test",
+    #     "file_path": "./1.txt"
+    # }
+    # '''
+    # r = open("./sender_conf.json", "r")
+    # data = r.read()
+    # data = json.loads(data)
+    # r.close()
     try:
-        title = data["title"]
-        content = data["content"]
-        file_path = data["file_path"]
-        your_email = data["your_email"]
-        passward = data["passward"]
-        to_email = data["send_to"]
+        your_email = input("type you email>>")
+        passward = getpass.getpass("input your password>>")
+        to_email = input("to email>>")
+        title = input("email title>>")
+        content = input("email content>>")
+        file_path = input("input your file_path>>")
         s = SendMail(
+            passward,
             your_email,
             to_email,
             mail_title=title,
             mail_content=content,
             file_path=file_path,
-            pass_word=passward
         )
         s.send()
-        print("mail sent success..")
+        print("mail already send")
+        input("")
     except KeyboardInterrupt:
         sys.exit()
 
