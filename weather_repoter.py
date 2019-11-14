@@ -50,7 +50,7 @@ def main():
         print("choice your city")
         print("--------------")
         for index, item in enumerate(city_list):
-            print("{}--{}".format(index, item))
+            print("number:{}--{}".format(index, item))
         print("")
         print("--------------")
         number = input("input the city number>>")

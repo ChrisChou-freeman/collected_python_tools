@@ -25,7 +25,7 @@ class SendMail(object):
         mail_content="test email",
         file_path=""
     ):
-        self.host_server = 'smtp.qq.com' # your smtp email server
+        self.host_server = 'smtp.qq.com' # choice your email smtp server
         self.pwd = password
         self.sender_email = sender_email
         self.receiver = to_eamil if to_eamil else self.sender_email
